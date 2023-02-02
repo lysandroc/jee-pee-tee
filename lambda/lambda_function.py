@@ -15,16 +15,17 @@ from ask_sdk_core.dispatch_components import (
 from ask_sdk_core.handler_input import HandlerInput
 from ask_sdk_core.skill_builder import SkillBuilder
 from ask_sdk_model import Response
-from revChatGPT.revChatGPT import Chatbot
-from utils import load_config
+from revChatGPT.Official import Chatbot
+
+#from utils import load_config
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-config = load_config()
+#config = load_config()
 
 # Set up ChatGPT
-chatgpt = Chatbot(config)
+chatgpt = Chatbot("")
 
 
 class LaunchRequestHandler(AbstractRequestHandler):
@@ -38,7 +39,7 @@ class LaunchRequestHandler(AbstractRequestHandler):
 
         chatgpt.reset_chat()
         # Uses the session_token to get a new bearer token
-        chatgpt.refresh_session()
+        #chatgpt.refresh_session()
 
         return (
             handler_input.response_builder.speak(speak_output)
@@ -55,11 +56,11 @@ class QuestionIntentHandler(AbstractRequestHandler):
 
     def handle(self, handler_input: HandlerInput) -> Response:
         # Uses the session_token to get a new bearer token
-        chatgpt.refresh_session()
+        #chatgpt.refresh_session()
         slots = handler_input.request_envelope.request.intent.slots
         voice_prompt = slots["searchQuery"].value
         logger.info("User says: " + voice_prompt)
-        response = chatgpt.get_chat_response(voice_prompt)
+        response = chatgpt.ask(voice_prompt)
         logger.info(response)
         logger.info("ChatGPT says: " + response["message"])
         speak_output = response["message"]
