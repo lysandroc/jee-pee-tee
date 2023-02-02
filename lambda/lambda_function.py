@@ -37,7 +37,7 @@ class LaunchRequestHandler(AbstractRequestHandler):
     def handle(self, handler_input: HandlerInput) -> Response:
         speak_output = "Sure, what is the question?"
 
-        chatgpt.reset_chat()
+        chatgpt.reset()
         # Uses the session_token to get a new bearer token
         #chatgpt.refresh_session()
 
@@ -128,7 +128,7 @@ class SessionEndedRequestHandler(AbstractRequestHandler):
         return ask_utils.is_request_type("SessionEndedRequest")(handler_input)
 
     def handle(self, handler_input: HandlerInput) -> Response:
-        chatgpt.reset_chat()
+        chatgpt.reset()
 
         return handler_input.response_builder.response
 
